@@ -44,6 +44,13 @@ case class TemplateAccParams(
   useBlackBox: Boolean = true)
   
 
-class WithTemplateAccBlackBox extends Config((site, here, up) => {})
+class WithTemplateAccBlackBox extends Config((site, here, up) => {
+ case BuildRoCC => up(BuildRoCC) ++ Seq(
+    (p: Parameters) => {
+      val template_acc = LazyModule.apply(new templateAcc(OpcodeSet.custom2)(p))
+      template_acc
+    }
+)	 
+})
 
 
