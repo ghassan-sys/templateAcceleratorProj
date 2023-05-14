@@ -17,7 +17,7 @@ class WrapBundle(nPTWPorts: Int)(implicit p: Parameters) extends Bundle {
 }
 
 class templateAccBlackBox(implicit p: Parameters) extends 
-	BlackBox(Map("DATA_WIDTH" -> IntParam(w), "ADDR_WIDTH" -> IntParam(w), "CFG_REG_WIDTH" -> IntParam(w), "NUM_OF_CFG_REGS" -> IntParam(w), "MEM_DATA_WIDTH" -> IntParam(w), "BUFF_SIZE" -> IntParam(w), "LATENCY" -> IntParam(w))) 
+	BlackBox(Map("DATA_WIDTH" -> IntParam(p.DATA_WIDTH), "ADDR_WIDTH" -> IntParam(w), "CFG_REG_WIDTH" -> IntParam(w), "NUM_OF_CFG_REGS" -> IntParam(w), "MEM_DATA_WIDTH" -> IntParam(w), "BUFF_SIZE" -> IntParam(w), "LATENCY" -> IntParam(w))) 
 		with HasBlackBoxResource {
   val io = IO(new WrapBundle(0))
 
@@ -30,11 +30,18 @@ class templateAcc(opcodes: OpcodeSet)(implicit p: Parameters) extends LazyRoCC(o
 
 class templateAccImp(outer: templateAcc)(implicit p: Parameters) extends LazyRoCCModuleImp(outer) {
 
-    val templateaccbb = Module(new templateAccBlackBox)
+    def params : TemplateAccParams
+    val templateaccbb = Module(new templateAccBlackBox(params))
     io <> templateaccbb.io.io
     templateaccbb.io.clock := clock
     templateaccbb.io.reset := reset
   }
+
+case class TemplateAccParams(
+  DATA_WIDTH: Int = 8,
+  ADDR_WIDTH: Int = 8,
+  useAXI4: Boolean = false,
+  useBlackBox: Boolean = true)
   
 
 class WithTemplateAccBlackBox extends Config((site, here, up) => {})
