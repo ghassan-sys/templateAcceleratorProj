@@ -10,7 +10,7 @@ all: build run
 # Build target
 build:
 #	sbt "project $(SBT_PROJECT)" "runMain $(SBT_PROJECT).BuildVerilog --verilogSrc $(VERILOG_SRC)"
-sbt "project templateAcceleratorProj" "runMain templateAcceleratorProj.BuildVerilog --verilogSrc src/main/vsrc/accTemplate.v"
+sbt "project (templateAcceleratorProj)" "runMain (templateAcceleratorProj).BuildVerilog --verilogSrc (src/main/vsrc/accTemplate.v)"
 # Run target
 run:
 	sbt "project $(SBT_PROJECT)" "runMain $(SBT_PROJECT).RunEnvironment --scalaSrc $(SCALA_SRC) --configSrc $(CONFIG_SRC)"
