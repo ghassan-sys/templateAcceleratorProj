@@ -22,3 +22,8 @@ Anas To Do:
 3.  make sure you know how to compile the chipyard project! we will go over this in the next session with Alon.
 
 if you see anything wrong - tell me!
+
+
+important commands:
+git submodule update --remote ./templateAcceleratorProj/
+git submodule add https://git-repository.templateAcceleratorProj.git
