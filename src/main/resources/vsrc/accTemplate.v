@@ -121,7 +121,7 @@ always_ff@(posedge clock, negedge reset) begin
 		begin
 		
 			io_resp_bits_rd   <= 5;
-			io_resp_bits_data <= 8'h06; 
+			io_resp_bits_data <= 8'd06; 
 		end
 		
 		
