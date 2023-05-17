@@ -28,13 +28,13 @@ module AcceleratorTemplate#
 // CPU -> Accelerator. recieve a command from the CPU.
 	input 	  io_cmd_valid,
 	output 	  io_cmd_ready,
-	//input  [6:0]  io_cmd_bits_inst_funct,
-	//input  [4:0]  io_cmd_bits_inst_rs2,
-	//input  [4:0]  io_cmd_bits_inst_rs1,  // This is the register number. there are 32 registers.
-	//input  [4:0]  io_cmd_bits_inst_rd,
+	input  [6:0]  io_cmd_bits_inst_funct,
+	input  [4:0]  io_cmd_bits_inst_rs2,
+	input  [4:0]  io_cmd_bits_inst_rs1,  // This is the register number. there are 32 registers.
+	input  [4:0]  io_cmd_bits_inst_rd,
 	input  [6:0]  io_cmd_bits_inst_opcode,
-	//input  [63:0] io_cmd_bits_rs1,  // Q: Why do we need this? is this the register address?
-	//input  [63:0] io_cmd_bits_rs2,
+	input  [63:0] io_cmd_bits_rs1,  
+	input  [63:0] io_cmd_bits_rs2,
 
 // RoCC interface. 
 // Accelerator -> CPU (Rocket/BOOM), give the CPU the calculated data
