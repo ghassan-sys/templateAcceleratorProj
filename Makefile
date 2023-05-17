@@ -1,5 +1,5 @@
 # Variables
-SBT_PROJECT = templateAcceleratorProj
+SBT_PROJECT = template_accelerator_proj
 VERILOG_SRC = src/main/vsrc/accTemplate.v
 SCALA_SRC = src/main/scala/templateAcc.scala
 CONFIG_SRC = config.scala
