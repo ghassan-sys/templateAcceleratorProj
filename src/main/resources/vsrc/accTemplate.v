@@ -41,7 +41,7 @@ module AcceleratorTemplate#
 	input         io_resp_ready,
 	output        io_resp_valid,
 	output [4:0]  io_resp_bits_rd,
-	output [63:0] io_resp_bits_data,
+	output [63:0] io_resp_bits_data
 
 // MMIO interface. 
 // Accelerator --> Memory
@@ -125,33 +125,33 @@ always_ff@(posedge clock, negedge reset) begin
 		end
 		
 		
-		if(io_mem_req_ready) //recive command.
-		begin
-			counter <= 0;
-			flag <= 1;
+// 		if(io_mem_req_ready) //recive command.
+// 		begin
+// 			counter <= 0;
+// 			flag <= 1;
 		
-		end
+// 		end
 		
-		if(flag)
-		begin
+// 		if(flag)
+// 		begin
 			
-			counter <= counter + 1;
-			if(counter == LATENCY) // finish command count
-			begin
+// 			counter <= counter + 1;
+// 			if(counter == LATENCY) // finish command count
+// 			begin
 				
-				flag <= 0;
-				counter <= 0;
-				io_mem_req_valid <= 1;
-			end
+// 				flag <= 0;
+// 				counter <= 0;
+// 				io_mem_req_valid <= 1;
+// 			end
 			
-		end // falg
+// 		end // falg
 		
-		if(io_mem_req_valid & io_resp_ready) // give back the data to the cpu.
-		begin
+// 		if(io_mem_req_valid & io_resp_ready) // give back the data to the cpu.
+// 		begin
 		
-			io_resp_bits_rd   <= 5;
-			io_resp_bits_data <= 111111; 
-		end
+// 			io_resp_bits_rd   <= 5;
+// 			io_resp_bits_data <= 111111; 
+// 		end
 		
 		
 		
