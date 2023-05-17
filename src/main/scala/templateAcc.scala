@@ -17,7 +17,7 @@ class WrapBundle(nPTWPorts: Int)(implicit p: Parameters) extends Bundle {
 }
 
 class templateAccBlackBox(implicit p: Parameters) extends 
-	BlackBox(Map("DATA_WIDTH" -> IntParam(p.DATA_WIDTH), "ADDR_WIDTH" -> IntParam(w), "CFG_REG_WIDTH" -> IntParam(w), "NUM_OF_CFG_REGS" -> IntParam(w), "MEM_DATA_WIDTH" -> IntParam(w), "BUFF_SIZE" -> IntParam(w), "LATENCY" -> IntParam(w))) 
+	BlackBox(Map("DATA_WIDTH" -> IntParam(p.DATA_WIDTH), "ADDR_WIDTH" -> IntParam(p.ADDR_WIDTH), "CFG_REG_WIDTH" -> IntParam(p.CFG_REG_WIDTH), "NUM_OF_CFG_REGS" -> IntParam(p.NUM_OF_CFG_REGS), "MEM_DATA_WIDTH" -> IntParam(p.MEM_DATA_WIDTH), "BUFF_SIZE" -> IntParam(p.BUFF_SIZE), "LATENCY" -> IntParam(p.LATENCY))) 
 		with HasBlackBoxResource {
   val io = IO(new WrapBundle(0))
 
@@ -39,9 +39,13 @@ class templateAccImp(outer: templateAcc)(implicit p: Parameters) extends LazyRoC
 
 case class TemplateAccParams(
   DATA_WIDTH: Int = 8,
-  ADDR_WIDTH: Int = 8,
-  useAXI4: Boolean = false,
-  useBlackBox: Boolean = true)
+  ADDR_WIDTH: Int = 10,
+  CFG_REG_WIDTH: Int = 32,
+  NUM_OF_CFG_REGS: Int = 3,
+  MEM_DATA_WIDTH: Int = 8,
+  BUFF_SIZE: Int = 32,
+  LATANCY: Int = 500,
+  MEMORY_BANDWIDTH: Int = 300)
   
 
 class WithTemplateAccBlackBox extends Config((site, here, up) => {
