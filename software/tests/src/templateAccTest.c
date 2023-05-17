@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include "templateAccTest_h.h"
+#include "rocc.h"
 
 #ifdef __linux
 #include <sys/mman.h>
