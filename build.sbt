@@ -2,7 +2,7 @@ organization := "ee.technion"
 
 version := "1.0"
 
-name := "templateAccelertorProject"
+name := "templateAccelertorProj"
 
 scalaVersion := "2.12.4"
 
