@@ -27,3 +27,7 @@ if you see anything wrong - tell me!
 important commands:
 git submodule update --remote ./templateAcceleratorProj/
 git submodule add https://git-repository.templateAcceleratorProj.git
+in order to compile (RoCC):
+1.  go to sims/verilator.   
+2.  source env.sh
+3.  make CONFIG=templateAccConfig 
