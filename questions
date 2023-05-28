@@ -1,6 +1,16 @@
 set io_busy to 0 (set to 1 in the first cycle that the command appears)
 set other valid output signals to 0.
 
+
+how to compile and run:
+ first you need to run (from sims/verilator) "source env.sh", then "make CONFIG=templateAccConfig" then:
+- compile:
+  from the dir where the test.c file is localted. run:
+  riscv64-unknown-elf-gcc -o templateAccTest templateAccTest.c
+- run:
+  from sims/verilator, run:
+  /simulator-chipyard-templateAccConfig pk ~/Desktop/chipyard/generators/template_accelerator_proj/software/tests/src/templateAccTest
+  
 important commands:
 git submodule update --remote ./templateAcceleratorProj/
 git submodule add https://git-repository.templateAcceleratorProj.git
