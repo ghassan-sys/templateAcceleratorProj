@@ -31,3 +31,4 @@ in order to compile (RoCC):
 1.  go to sims/verilator.   
 2.  source env.sh
 3.  make CONFIG=templateAccConfig 
+cp ../../generators/template_accelerator_proj/src/main/resources/vsrc/templateAccBlackBox.v /home/user/Desktop/chipyard/sims/verilator/generated-src/chipyard.TestHarness.templateAccConfig/gen-collateral/templateAccBlackBox.v
