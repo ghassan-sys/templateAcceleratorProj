@@ -1,28 +1,5 @@
-10.5.23:
-Q1:
-in the config.scala file, is this how we add the accelerator ? is this the correct way to define the params
-
-Q2:
-where to define the C file, and what should be in it?
-
-Q3:
-go over the scala file to make sure everything makes sense, waiting for email answer from Alon.
-
-to Do for next week:
-fix the errors, compile and start writing the C file code.
-
-Anas To Do:
-1.  make sure that the system verilog file works correctly.
-    (the system verilog file in https://github.com/ghassan-sys/templateAcceleratorProj/blob/main/src/main/resources/vsrc/accTemplate.v)
-    if there are errors (shouldn't be), fix them and tell me.
-    Notice that now the reset works on 1 not 0 (I replaced resetN with reset, to acomodate the chipyard implementation)
-    
-2.  understand the project's heirarchy and what is implemented in the files. go over the 3 main files and understand them (2 scala files and 1 verilog file)
-
-3.  make sure you know how to compile the chipyard project! we will go over this in the next session with Alon.
-
-if you see anything wrong - tell me!
-
+set io_busy to 0 (set to 1 in the first cycle that the command appears)
+set other valid output signals to 0.
 
 important commands:
 git submodule update --remote ./templateAcceleratorProj/
