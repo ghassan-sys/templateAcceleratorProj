@@ -1,5 +1,4 @@
-set io_busy to 0 (set to 1 in the first cycle that the command appears)
-set other valid output signals to 0.
+to open waves (gtkwaves) simply run: gtkwave.
 
 
 how to compile and run:
