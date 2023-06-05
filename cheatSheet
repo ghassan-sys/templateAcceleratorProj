@@ -3,7 +3,7 @@ then open vcd file, under the path:
 /home/user/Desktop/chipyard/sims/verilator/output/chipyard.TestHarness.templateAccConfig/<file_name>.vcd
 to find our accelerator module:
 Top->TestHarness->chiptop->system->tile_prci_domain->tile_reset_domain_tile->templateaccbb
-to generate waves, run:
+to generate waves, run (from chipyard/sims/verilator):
 make run-binary-debug BINARY=../../generators/template_accelerator_proj/software/tests/src/templateAccTest CONFIG=templateAccConfig
 
 
