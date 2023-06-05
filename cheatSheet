@@ -1,4 +1,10 @@
 to open waves (gtkwaves) simply run: gtkwave.
+then open vcd file, under the path:
+/home/user/Desktop/chipyard/sims/verilator/output/chipyard.TestHarness.templateAccConfig/<file_name>.vcd
+to find our accelerator module:
+Top->TestHarness->chiptop->system->tile_prci_domain->tile_reset_domain_tile->templateaccbb
+to generate waves, run:
+make run-binary-debug BINARY=../../generators/template_accelerator_proj/software/tests/src/templateAccTest CONFIG=templateAccConfig
 
 
 how to compile and run:
@@ -18,4 +24,3 @@ in order to compile (RoCC):
 2.  source env.sh
 3.  make CONFIG=templateAccConfig 
 cp ../../generators/template_accelerator_proj/src/main/resources/vsrc/templateAccBlackBox.v /home/user/Desktop/chipyard/sims/verilator/generated-src/chipyard.TestHarness.templateAccConfig/gen-collateral/templateAccBlackBox.v
-make run-binary-debug BINARY=../../generators/template_accelerator_proj/software/tests/src/templateAccTest CONFIG=templateAccConfig
