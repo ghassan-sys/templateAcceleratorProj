@@ -6,6 +6,8 @@ Top->TestHarness->chiptop->system->tile_prci_domain->tile_reset_domain_tile->tem
 to generate waves, run (from chipyard/sims/verilator):
 make run-binary-debug BINARY=../../generators/template_accelerator_proj/software/tests/src/templateAccTest CONFIG=templateAccConfig
 
+https://pcotret.gitlab.io/riscv-custom/adding_custom.html#custom-opcodes
+
 
 how to compile and run:
  first you need to run (from sims/verilator) "source env.sh", then "make CONFIG=templateAccConfig" then:
