@@ -206,6 +206,7 @@ module templateAccBlackBox#
 );
 
 reg [4:0] io_resp_rd_reg;
+reg [4:0] io_resp_rd_reg_temp;
 reg [63:0] io_resp_data_reg;
 reg io_resp_valid_reg;
 reg io_busy_reg;
@@ -223,6 +224,7 @@ logic [CFG_REG_WIDTH - 1 : 0] reg_array [NUM_OF_CFG_REGS - 1 : 0];
 
 int counter;
 logic flag;
+logic flag2;
 
 genvar i;
 
@@ -238,6 +240,7 @@ always_ff@(posedge clock, negedge reset) begin
 	if(reset) begin
 		counter 	     	      <= 0;
 		flag                 	      <= 0;
+		flag2			      <= 0;
 		io_resp_data_reg     	      <= 0;
 		io_resp_rd_reg       	      <= 0;
 		io_resp_valid_reg    	      <= 0;
@@ -245,9 +248,10 @@ always_ff@(posedge clock, negedge reset) begin
 		io_fpu_req_valid_reg 	      <= 0;
 		io_interrupt_reg    	      <= 0;
 		io_mem_req_valid_reg 	      <= 0;
-		io_cmd_ready_reg     	      <= 1;
+		io_cmd_ready_reg     	      <= 0;
 		io_mem_s2_kill_reg   	      <= 0;
 		io_mem_keep_clock_enabled_reg <= 1;
+		io_resp_rd_reg_temp	      <= 0;
 	end
 	else 
 	begin
@@ -256,7 +260,7 @@ always_ff@(posedge clock, negedge reset) begin
 		io_fpu_req_valid_reg <= 0;
 		io_interrupt_reg     <= 0;
 		io_mem_req_valid_reg <= 0;
-		io_cmd_ready_reg     <= 1;
+		io_cmd_ready_reg     <= 0;
 		io_mem_s2_kill_reg   <= 0;
 		io_mem_keep_clock_enabled_reg <= 1;
 
@@ -264,6 +268,8 @@ always_ff@(posedge clock, negedge reset) begin
 		begin
 			counter <= 0;
 			flag    <= 1;
+			io_cmd_ready_reg <= 1;
+			io_resp_rd_reg_temp <= io_cmd_bits_inst_rd;
 		
 		end
 		
@@ -271,6 +277,7 @@ always_ff@(posedge clock, negedge reset) begin
 		begin
 			
 			counter <= counter + 1;
+			io_cmd_ready_reg <= 1;
 			if(counter == LATENCY) // finish command count
 			begin
 				
@@ -284,8 +291,16 @@ always_ff@(posedge clock, negedge reset) begin
 		if(io_resp_valid_reg & io_resp_ready) // give back the data to the cpu.
 		begin
 		
-			io_resp_rd_reg   <= 5;
-			io_resp_data_reg <= 8'd06; 
+			io_resp_rd_reg   <= io_resp_rd_reg_temp;
+			io_resp_data_reg <= 8'd06;
+		        io_resp_valid_reg<= 1;	
+			flag2            <= 1;
+		end
+
+		if(flag2)
+		begin
+			io_resp_valid_reg <= 0;
+			flag2             <= 0;
 		end
 		
 	end // reset
