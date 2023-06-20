@@ -5,6 +5,8 @@ to find our accelerator module:
 Top->TestHarness->chiptop->system->tile_prci_domain->tile_reset_domain_tile->templateaccbb
 to generate waves, run (from chipyard/sims/verilator):
 make run-binary-debug BINARY=../../generators/template_accelerator_proj/software/tests/src/templateAccTest CONFIG=templateAccConfig
+make run-binary-debug BINARY=../../generators/template_accelerator_proj/software/tests/src/gemmini-rocc-tests/build/bareMetalC/templateAccTest-baremetal CONFIG=templateAccConfig
+
 
 https://pcotret.gitlab.io/riscv-custom/adding_custom.html#custom-opcodes
 
