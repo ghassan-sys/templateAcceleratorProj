@@ -17,10 +17,13 @@
 
 
 #define DATA_WIDTH 8
+#define NUM_OF_CFG_REGS 10
+#define COMPUTE 0
+#define CONFIG 1
 
 int main() {
 
-	unsigned long start_time, end_time, mid_time;
+	unsigned long start_time, end_time;
 	
 
 #ifdef __linux
@@ -35,7 +38,7 @@ int main() {
   do {
     printf("Start template accelerator  <-->  Rocket test.\n");
     // Setup some test data
-    int rd, rs1, rs2;
+    int rd, rs1, rs2, i, trash;
     
  
     // The "fence" instruction is often used as a memory barrier or memory fence to enforce ordering constraints on memory operations
@@ -49,14 +52,19 @@ int main() {
     //printf("Start writing to Accelerator \n");
    // ROCC_INSTRUCTION_SS(2, &input, &output, 0);
 
-    printf("executing the CUSTOM command\n");
     start_time = rdcycle();
-    ROCC_INSTRUCTION(2, rd, rs1, rs2, 0);
-    mid_time = rdcycle();
+    printf("start of test\n");
+    printf("start writing to config registers, num of config registers is %d\n", NUM_OF_CFG_REGS);
+    for(i=0; i < NUM_OF_CFG_REGS; i++){
+	    ROCC_INSTRUCTION(2, trash, rs1, rs2, CONFIG);
+    }
+    printf("finished configuring the registers! starting the transaction with accelerator!\n");
+    printf("executing the CUSTOM command\n");
+    ROCC_INSTRUCTION(2, rd, rs1, rs2, COMPUTE);
+    end_time = rdcycle();
     printf("CUSTOM command SUCECESS!!\n");
     printf("got data in rd = %d\n", rd);
-
-    printf("time took to write from CPU to accelerator is %d cycles \n", mid_time - start_time);
+    printf("time took to write from CPU to accelerator is %d cycles \n", end_time - start_time);
 
     // Set length and compute hash
     //              opcode rd rs1      rs2 funct
@@ -66,26 +74,18 @@ int main() {
     printf("ASM VOLATILE : FENCE ::: MEMORY\n");
     asm volatile ("fence" ::: "memory");
 
-    //printf("Collect the total time - endcycle\n");
-    end_time = rdcycle();
-    //end_time = time(NULL);
-
     // Check result
-    static const unsigned char result[] = {'0', '6', '\0'};
     int res = 6;
 	    
     //printf("output:\"%s\" ==? result:=\"%s\" \n",output,result);
     printf("expected = %d vs output = %d\n", res, rd);
     if(rd != res) {
       printf("Failed: Outputs don't match!\n");
-      printf("RoCC Accelerator execution took %lu cycles\n", mid_time - start_time);
+      printf("RoCC Accelerator execution took %lu cycles\n", end_time - start_time);
       return 1;
     }
   } while(0);
 
-  //printf("Success!\n");
-
-  printf("RoCC Accelerator SUCCESS! execution took %lu cycles\n", mid_time - start_time);
-
+  printf("RoCC Accelerator SUCCESS! execution took %lu cycles\n", end_time - start_time);
   return 0;
 }
