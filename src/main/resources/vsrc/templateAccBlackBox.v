@@ -223,6 +223,7 @@ reg io_mem_keep_clock_enabled_reg;
 logic [CFG_REG_WIDTH - 1 : 0] reg_array [NUM_OF_CFG_REGS - 1 : 0];   
 
 int counter;
+int target_latency;
 logic flag;
 logic flag2;
 
@@ -252,6 +253,7 @@ always_ff@(posedge clock, negedge reset) begin
 		io_mem_s2_kill_reg   	      <= 0;
 		io_mem_keep_clock_enabled_reg <= 1;
 		io_resp_rd_reg_temp	      <= 0;
+		target_latency		      <= 0;
 	end
 	else 
 	begin
@@ -263,6 +265,12 @@ always_ff@(posedge clock, negedge reset) begin
 		io_cmd_ready_reg     <= 0;
 		io_mem_s2_kill_reg   <= 0;
 		io_mem_keep_clock_enabled_reg <= 1;
+		if(io_cmd_bits_inst_funct == 0) begin //COMPUTE
+			target_latency <= LATENCY;
+		end
+		else if(io_cmd_bits_inst_funct == 1) begin //CONFIG
+			target_latency <= 4;
+		end
 
 		if(io_cmd_valid) //recive command.
 		begin
@@ -278,7 +286,7 @@ always_ff@(posedge clock, negedge reset) begin
 			
 			counter <= counter + 1;
 			io_cmd_ready_reg <= 1;
-			if(counter == LATENCY) // finish command count
+			if(counter == target_latency) // finish command count
 			begin
 				
 				flag 		  <= 0;
