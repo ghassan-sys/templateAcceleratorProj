@@ -1,3 +1,27 @@
+/* cheatsheet */
+always, first of all, go to sims/verilator/ and run: source env.sh
+
+
+how to compile and run:
+- compile:
+  go to /home/user/Desktop/chipyard/generators/template_accelerator_proj/software/tests/src/gemmini-rocc-tests and run: ./build.sh
+- run:
+  go to /home/user/Desktop/chipyard/sims/verilator/ and run: make run-binary-debug BINARY=../../generators/template_accelerator_proj/software/tests/src/gemmini-rocc-tests/build/bareMetalC/templateAccTest-baremetal CONFIG=templateAccConfig
+- when you change the verilog module, you must run "make clean" before running the previous make command. otherwise the design will not change.
+  
+
+to open waves (gtkwaves) simply run: gtkwave.
+then open vcd file, under the path:
+/home/user/Desktop/chipyard/sims/verilator/output/chipyard.TestHarness.templateAccConfig/<file_name>.vcd
+to find our accelerator module:
+Top->TestHarness->chiptop->system->tile_prci_domain->tile_reset_domain_tile->templateaccbb
+
+
+
+
+
+
+misc:
 to open waves (gtkwaves) simply run: gtkwave.
 then open vcd file, under the path:
 /home/user/Desktop/chipyard/sims/verilator/output/chipyard.TestHarness.templateAccConfig/<file_name>.vcd
@@ -6,11 +30,7 @@ Top->TestHarness->chiptop->system->tile_prci_domain->tile_reset_domain_tile->tem
 to generate waves, run (from chipyard/sims/verilator):
 make run-binary-debug BINARY=../../generators/template_accelerator_proj/software/tests/src/templateAccTest CONFIG=templateAccConfig
 make run-binary-debug BINARY=../../generators/template_accelerator_proj/software/tests/src/gemmini-rocc-tests/build/bareMetalC/templateAccTest-baremetal CONFIG=templateAccConfig
-
-
 https://pcotret.gitlab.io/riscv-custom/adding_custom.html#custom-opcodes
-
-
 how to compile and run:
  first you need to run (from sims/verilator) "source env.sh", then "make CONFIG=templateAccConfig" then:
 - compile:
@@ -19,7 +39,6 @@ how to compile and run:
 - run:
   from sims/verilator, run:
   /simulator-chipyard-templateAccConfig pk ~/Desktop/chipyard/generators/template_accelerator_proj/software/tests/src/templateAccTest
-  
 important commands:
 git submodule update --remote ./templateAcceleratorProj/
 git submodule add https://git-repository.templateAcceleratorProj.git
@@ -28,3 +47,10 @@ in order to compile (RoCC):
 2.  source env.sh
 3.  make CONFIG=templateAccConfig 
 cp ../../generators/template_accelerator_proj/src/main/resources/vsrc/templateAccBlackBox.v /home/user/Desktop/chipyard/sims/verilator/generated-src/chipyard.TestHarness.templateAccConfig/gen-collateral/templateAccBlackBox.v
+
+
+
+
+
+
+
