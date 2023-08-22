@@ -97,16 +97,13 @@ trait MMIOModule extends HasRegMap {
   for (i <- 0 until params.NUM_OF_CFG_REGS) {
     splitCfgReg(i) := VecInit(Seq.tabulate(4)(j => _cfg_reg_(i * 4 + j)))
   }
+  cfg_reg_mapping = splitCfgReg.zip(range(8, 64, 4)).map{case (x, y) => (y -> Seq(x))}
 
   regmap(
     0x00 -> Seq(
       RegField.w(1, y)), // write-only, y.valid is set on write
     0x04 -> Seq(
       RegField.r(64, gcd))) // read-only, gcd.ready is set on read
-
-  for (i <- 0 until params.NUM_OF_CFG_REGS) {
-  regmap()
-}
 }
 // DOC include end: MMIO instance regmap
 
