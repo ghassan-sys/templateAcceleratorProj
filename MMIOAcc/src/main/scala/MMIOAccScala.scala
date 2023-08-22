@@ -1,5 +1,7 @@
 package chipyard.example
 
+// scala collections
+
 import chisel3._
 import chisel3.util._
 import chisel3.experimental.{IntParam, BaseModule}
@@ -39,10 +41,12 @@ class MMIO_IO() extends Bundle {
   val output_valid = Output(Bool())
   val busy = Output(Bool())
   val data_out = Output(UInt(64.W))
-// watch out
-  val _cfg_reg_ = Output(UInt(NUM_OF_CFG_REG*CFG_REG_WIDTH.W))
-
- // what about _cfg_reg_ ???
+  
+// watch out! might not be true
+  val common_cfg_reg_ = Output(UInt(NUM_OF_CFG_REG*CFG_REG_WIDTH.W))
+  val input_cfg_reg_ = Output(UInt(NUM_OF_CFG_REG*CFG_REG_WIDTH.W))
+  val output_cfg_reg_ = Output(UInt(NUM_OF_CFG_REG*CFG_REG_WIDTH.W))
+  val funct_cfg_reg_ = Output(UInt(CFG_REG_WIDTH.W))
 }
 
 
@@ -67,48 +71,6 @@ class MMIOAccBlackBox(tap: MMIOParams) (implicit p: Parameters) extends BlackBox
 // DOC include end: MMIO blackbox
 
 
-
-
-//FIXME: I do not think we need this.
-// DOC include start: MMIO chisel
-//class GCDMMIOChiselModule(val w: Int) extends Module
-//  with HasGCDIO
-//{
-//  val s_idle :: s_run :: s_done :: Nil = Enum(3)
-//
-//  val state = RegInit(s_idle)
-//  val tmp   = Reg(UInt(w.W))
-//  val gcd   = Reg(UInt(w.W))
-//
-//  io.input_ready := state === s_idle
-//  io.output_valid := state === s_done
-//  io.gcd := gcd
-//
-//  when (state === s_idle && io.input_valid) {
-//    state := s_run
-//  } .elsewhen (state === s_run && tmp === 0.U) {
-//    state := s_done
-//  } .elsewhen (state === s_done && io.output_ready) {
-//    state := s_idle
-//  }
-//
-//  when (state === s_idle && io.input_valid) {
-//    gcd := io.x
-//    tmp := io.y
-//  } .elsewhen (state === s_run) {
-//    when (gcd > tmp) {
-//      gcd := gcd - tmp
-//   } .otherwise {
-//      tmp := tmp - gcd
-//    }
-//  }
-//
-//  io.busy := state =/= s_idle
-//}
-// DOC include end: GCD chisel
-
-
-
 // DOC include start: GCD instance regmap
 
 trait MMIOModule extends HasRegMap {
@@ -123,19 +85,6 @@ trait MMIOModule extends HasRegMap {
   val gcd = Wire(new DecoupledIO(UInt(64.W)))
   val splitCfgReg = Vec(UInt(params.CFG_REG_WIDTH.W), UInt(params.NUM_OF_CFG_REGS.W))
 
-// FIXME: to be deleted.
-// How many clock cycles in a PWM cycle?
-//  val x = Reg(UInt(params.width.W))
-//  val y = Wire(new DecoupledIO(UInt(params.width.W)))
-//  val gcd = Wire(new DecoupledIO(UInt(params.width.W)))
-//  val status = Wire(UInt(2.W))
-//
-//  val impl = if (params.useBlackBox) {
-//    Module(new GCDMMIOBlackBox(params.width))
-//  } else {
-//    Module(new GCDMMIOChiselModule(params.width))
-//  }
-
   impl.io.clock        := clock
   impl.io.reset        := reset.asBool
   impl.io.input_valid  := y.valid
@@ -145,21 +94,11 @@ trait MMIOModule extends HasRegMap {
   impl.io.output_ready := gcd.ready
   io.mmio_busy 	       := impl.io.busy
 
-
-scala collections
-
-  // Question: what about the _cfg_regs_ field?
-  // Question: in regmap bellow, maybe we need a for or a while loop to configure all registers?
   for (i <- 0 until params.NUM_OF_CFG_REGS) {
     splitCfgReg(i) := VecInit(Seq.tabulate(4)(j => _cfg_reg_(i * 4 + j)))
   }
 
   regmap(
-//    0x00 -> Seq(
-//      RegField.r(2, status)), // a read-only register capturing current status
-//    0x04 -> Seq(
-//      RegField.w(params.width, x)), // a plain, write-only register
-
     0x00 -> Seq(
       RegField.w(1, y)), // write-only, y.valid is set on write
     0x04 -> Seq(
@@ -172,7 +111,6 @@ scala collections
 // DOC include end: MMIO instance regmap
 
 
-// FIXME: do we need both of them?
 // DOC include start: MMIO router
 class MMIOTL(params: MMIOParams, beatBytes: Int)(implicit p: Parameters)
   extends TLRegisterRouter(
@@ -180,14 +118,6 @@ class MMIOTL(params: MMIOParams, beatBytes: Int)(implicit p: Parameters)
     beatBytes = beatBytes)(
       new TLRegBundle(params, _) with MMIOTopIO)(
       new TLRegModule(params, _, _) with MMIOModule)
-
-//class MMIOAXI4(params: MMIOParams, beatBytes: Int)(implicit p: Parameters)//
-  extends AXI4RegisterRouter(
- //   params.address,
-    beatBytes=beatBytes)(
-      new AXI4RegBundle(params, _) with MMIOTopIO)(
-      new AXI4RegModule(params, _, _) with MMIOModule)
-// DOC include end: MMIO router
 
 
 
