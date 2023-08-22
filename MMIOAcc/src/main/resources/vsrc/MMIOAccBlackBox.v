@@ -4,6 +4,10 @@
 * Counts latency.
 */
 
+`define RoCC_NUM_INPUTS 97
+`define RoCC_NUM_OUTPUTS 48 // 49 with funct input, it is a special one so I treated it differently
+// the number of registers to be configured: RoCC_NUM_INPUTS + (RoCC_NUM_OUTPUTS + 1 /*+1 is funct*/) + NUM_OF_CFG_REGS (Rocc)
+
 
 module MMIOAccBlackBox#
 (
@@ -19,9 +23,6 @@ module MMIOAccBlackBox#
   parameter int MEMORY_BANDWIDTH = 300   // measured in bps (bytes per second), this should be a unique accelerator trait. affects performance.
 //parameter int pipeline
 )
-
-NUM_OF_CFG_REGS = RoCC Input + Rocc output + NUM_OF_CFG_REGS (Rocc)
-
 (
 //define the inputs/outputs
 	input 	  	       clock,
@@ -31,13 +32,13 @@ NUM_OF_CFG_REGS = RoCC Input + Rocc output + NUM_OF_CFG_REGS (Rocc)
     	input     	       input_valid,
     	input                  output_ready,
     	output                 output_valid,
-    	output                 busy
+    	output                 busy,
 
     	output reg [63:0] data_out,
-	input [NUM_OF_CFG_REGS - 2: 0][CFG_REG_WIDTH - 1: 0] _cfg_regs_,
-	input [NUM_INPUT - 1:0]
-	input [NUM_outPUT - 1:0
-	INPUT FUNCT
+	input [NUM_OF_CFG_REGS  - 1 : 0] [CFG_REG_WIDTH - 1 : 0]  common_cfg_regs_,
+	input [RoCC_NUM_INPUTS  - 1 : 0] [CFG_REG_WIDTH - 1 : 0]  input_cfg_regs_,
+	input [RoCC_NUM_OUTPUTS - 1 : 0] [CFG_REG_WIDTH - 1 : 0]  output_cfg_regs,
+	input [CFG_REG_WIDTH    - 1 : 0]			  funct_cfg_reg
 	//need to map all in reg map
 );
 
