@@ -149,6 +149,3 @@ assign busy 		 = io_busy_reg;
 assign input_ready	 = io_cmd_ready_reg;
 
 endmodule
-
-
-endmodule
