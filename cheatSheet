@@ -1,6 +1,10 @@
 /* cheatsheet */
 always, first of all, go to sims/verilator/ and run: source env.sh
 
+how to ssh to lab PC:
+ssh user@132.68.60.145
+pass: Jhgf!r71
+
 
 how to compile and run:
 - compile:
